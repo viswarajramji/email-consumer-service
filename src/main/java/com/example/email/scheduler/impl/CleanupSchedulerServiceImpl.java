@@ -18,7 +18,6 @@ public class CleanupSchedulerServiceImpl implements CleanupSchedulerService {
     @Override
     @Scheduled(fixedRate = 60_000)
     public void cleanupOldEntries() {
-        System.out.println("trigger calls");
         emailEventStatsService.cleanUp(CLEANUP_THRESHOLD_SECONDS);
     }
 }
