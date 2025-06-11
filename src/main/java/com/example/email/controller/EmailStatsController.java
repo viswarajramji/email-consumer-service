@@ -2,6 +2,7 @@ package com.example.email.controller;
 
 
 import com.example.email.dto.EmailStatsResponse;
+import com.example.email.exception.InvalidInputException;
 import com.example.email.service.EmailEventStatsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,11 @@ public class EmailStatsController {
 
     @GetMapping("/recent")
     public ResponseEntity<EmailStatsResponse> getRecentStats(@RequestParam(name = "lastSeconds") int lastSeconds) {
+
+        if (lastSeconds <= 0) {
+            throw new InvalidInputException("INVALID_INPUT_SECONDS", "lastSeconds must be greater than 0");
+        }
+
         EmailStatsResponse response = new EmailStatsResponse(
                 statsService.getUniqueEmailCount(lastSeconds),
                 statsService.getUniqueDomainCount(lastSeconds)
